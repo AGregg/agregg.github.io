@@ -1,6 +1,200 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RSVP - Linh & Andrew</title>
+    <link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Special Elite', 'Courier New', monospace;
+            background-color: #c994b8;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: #f5e6d3;
+            padding: 40px;
+            border-radius: 3px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            max-width: 500px;
+            width: 100%;
+            border: 3px solid #fff;
+            transform: rotate(-0.5deg);
+        }
+        
+        h1 {
+            color: #2c2c2c;
+            margin-bottom: 10px;
+            font-size: 28px;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #4a4a4a;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #2c2c2c;
+            font-weight: 400;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        input[type="text"],
+        input[type="email"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #2c2c2c;
+            border-radius: 0;
+            font-size: 16px;
+            font-family: 'Special Elite', 'Courier New', monospace;
+            background: #fff;
+            transition: all 0.3s;
+        }
+        
+        input[type="text"]:focus,
+        input[type="email"]:focus {
+            outline: none;
+            border-color: #8b5a7d;
+            box-shadow: 0 0 0 3px rgba(139, 90, 125, 0.1);
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            border: 2px solid #2c2c2c;
+        }
+        
+        .checkbox-group label {
+            margin-bottom: 0;
+            cursor: pointer;
+            text-transform: none;
+            letter-spacing: 0.5px;
+        }
+        
+        button {
+            width: 100%;
+            padding: 15px;
+            background: #2c2c2c;
+            color: #f5e6d3;
+            border: 3px solid #2c2c2c;
+            border-radius: 0;
+            font-size: 16px;
+            font-weight: 400;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Special Elite', 'Courier New', monospace;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        button:hover {
+            background: #8b5a7d;
+            border-color: #8b5a7d;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        .required {
+            color: #a83a5a;
+        }
+        
+        #plusOneNameField {
+            animation: slideDown 0.3s ease-out;
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+    <script>
+        function togglePlusOneField() {
+            const checkbox = document.getElementById('plusOne');
+            const field = document.getElementById('plusOneNameField');
+            field.style.display = checkbox.checked ? 'block' : 'none';
+        }
+    </script>
+</head>
 <body>
-<h1>hello world!</h1>
-<p>llorem ipsum</p>
+    <div class="container">
+        <h1>RSVP</h1>
+        <p class="subtitle">Linh & Andrew are getting married!</p>
+        
+        <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+            <!-- Hidden field for email subject -->
+            <input type="hidden" name="_subject" value="New RSVP for Linh & Andrew's Wedding">
+            
+            <!-- Hidden field for custom message -->
+            <input type="hidden" name="message" value="Someone has RSVP'd to your wedding!">
+            
+            <!-- Auto-response configuration -->
+            <input type="hidden" name="_autoresponse" value="Thank you for your RSVP! We're so excited to celebrate with you on February 08, 2026. More details to come!">
+            
+            <div class="form-group">
+                <label for="fullName">Full Name <span class="required">*</span></label>
+                <input type="text" id="fullName" name="fullName" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email Address <span class="required">*</span></label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            
+            <div class="form-group">
+                <div class="checkbox-group">
+                    <input type="checkbox" id="plusOne" name="plusOne" value="Yes" onchange="togglePlusOneField()">
+                    <label for="plusOne">I'll be bringing a +1</label>
+                </div>
+            </div>
+            
+            <div class="form-group" id="plusOneNameField" style="display: none;">
+                <label for="plusOneName">+1 Full Name</label>
+                <input type="text" id="plusOneName" name="plusOneName">
+            </div>
+            
+            <button type="submit">Submit RSVP</button>
+        </form>
+    </div>
 </body>
 </html>
