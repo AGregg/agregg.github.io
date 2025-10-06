@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RSVP - Linh & Andrew</title>
+    <title>Home - Linh & Andrew</title>
     <link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet">
     <style>
         * {
@@ -17,9 +17,56 @@
             background-color: #c994b8;
             min-height: 100vh;
             display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+        
+        .navbar {
+            background: #f5e6d3;
+            padding: 15px 0;
+            border-radius: 3px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            border: 3px solid #fff;
+            transform: rotate(-0.5deg);
+        }
+        
+        .nav-container {
+            max-width: 500px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+        }
+        
+        .nav-link {
+            color: #2c2c2c;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            padding: 10px 20px;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .nav-link:hover {
+            border-color: #8b5a7d;
+            background: rgba(139, 90, 125, 0.1);
+        }
+        
+        .nav-link.active {
+            border-color: #2c2c2c;
+            background: #2c2c2c;
+            color: #f5e6d3;
+        }
+        
+        .main-content {
+            flex: 1;
+            display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
         }
         
         .container {
@@ -48,153 +95,32 @@
             margin-bottom: 30px;
             font-size: 14px;
         }
-        
-        .form-group {
-            margin-bottom: 25px;
-        }
-        
-        label {
-            display: block;
-            margin-bottom: 8px;
-            color: #2c2c2c;
-            font-weight: 400;
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        
-        input[type="text"],
-        input[type="email"] {
-            width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #2c2c2c;
-            border-radius: 0;
-            font-size: 16px;
-            font-family: 'Special Elite', 'Courier New', monospace;
-            background: #fff;
-            transition: all 0.3s;
-        }
-        
-        input[type="text"]:focus,
-        input[type="email"]:focus {
-            outline: none;
-            border-color: #8b5a7d;
-            box-shadow: 0 0 0 3px rgba(139, 90, 125, 0.1);
-        }
-        
-        .checkbox-group {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        input[type="checkbox"] {
-            width: 20px;
-            height: 20px;
-            cursor: pointer;
-            border: 2px solid #2c2c2c;
-        }
-        
-        .checkbox-group label {
-            margin-bottom: 0;
-            cursor: pointer;
-            text-transform: none;
-            letter-spacing: 0.5px;
-        }
-        
-        button {
-            width: 100%;
-            padding: 15px;
-            background: #2c2c2c;
-            color: #f5e6d3;
-            border: 3px solid #2c2c2c;
-            border-radius: 0;
-            font-size: 16px;
-            font-weight: 400;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-family: 'Special Elite', 'Courier New', monospace;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-        
-        button:hover {
-            background: #8b5a7d;
-            border-color: #8b5a7d;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-        }
-        
-        button:active {
-            transform: translateY(0);
-        }
-        
-        .required {
-            color: #a83a5a;
-        }
-        
-        #plusOneNameField {
-            animation: slideDown 0.3s ease-out;
-        }
-        
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
     </style>
-    <script>
-        function togglePlusOneField() {
-            const checkbox = document.getElementById('plusOne');
-            const field = document.getElementById('plusOneNameField');
-            field.style.display = checkbox.checked ? 'block' : 'none';
-        }
-    </script>
 </head>
 <body>
-    <div class="container">
-        <h1>RSVP</h1>
-        <p class="subtitle">Linh & Andrew are getting married!</p>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-link active">Home</a>
+            <a href="rsvp.html" class="nav-link">RSVP</a>
+        </div>
+    </nav>
+    
+    <!-- this is the canva embed -->
+    <div class="main-content">
+        <div class="container">
+            <h1>Welcome</h1>
+            <p class="subtitle">Linh & Andrew are getting married!</p>
+        </div>
         
-        <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
-            <!-- Hidden field for email subject -->
-            <input type="hidden" name="_subject" value="New RSVP for Linh & Andrew's Wedding">
-            
-            <!-- Hidden field for custom message -->
-            <input type="hidden" name="message" value="Someone has RSVP'd to your wedding!">
-            
-            <!-- Auto-response configuration -->
-            <input type="hidden" name="_autoresponse" value="Thank you for your RSVP! We're so excited to celebrate with you on February 08, 2026. More details to come!">
-            
-            <div class="form-group">
-                <label for="fullName">Full Name <span class="required">*</span></label>
-                <input type="text" id="fullName" name="fullName" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="email">Email Address <span class="required">*</span></label>
-                <input type="email" id="email" name="email" required>
-            </div>
-            
-            <div class="form-group">
-                <div class="checkbox-group">
-                    <input type="checkbox" id="plusOne" name="plusOne" value="Yes" onchange="togglePlusOneField()">
-                    <label for="plusOne">I'll be bringing a +1</label>
-                </div>
-            </div>
-            
-            <div class="form-group" id="plusOneNameField" style="display: none;">
-                <label for="plusOneName">+1 Full Name</label>
-                <input type="text" id="plusOneName" name="plusOneName">
-            </div>
-            
-            <button type="submit">Submit RSVP</button>
-        </form>
+
+        <div style="position: relative; width: 100%; height: 0; padding-top: 337.3353%;
+        padding-bottom: 0; box-shadow: 0 2px 8px 0 rgba(63,69,81,0.16); margin-top: 1.6em; margin-bottom: 0.9em; overflow: hidden;
+        border-radius: 8px; will-change: transform;">
+         <iframe loading="lazy" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none; padding: 0;margin: 0;"
+           src="https://www.canva.com/design/DAG0gWyxtUE/y6PP1CtS5ZKcs9h8tXc4vQ/view?embed" allowfullscreen="allowfullscreen" allow="fullscreen">
+         </iframe>
+       </div>
+       <a href="https:&#x2F;&#x2F;www.canva.com&#x2F;design&#x2F;DAG0gWyxtUE&#x2F;y6PP1CtS5ZKcs9h8tXc4vQ&#x2F;view?utm_content=DAG0gWyxtUE&amp;utm_campaign=designshare&amp;utm_medium=embeds&amp;utm_source=link" target="_blank" rel="noopener">Linh &amp; Andrew are getting married</a> by Linh Dinh
     </div>
 </body>
 </html>
