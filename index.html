@@ -128,9 +128,111 @@
             <h1>Gallery</h1>
             <p class="subtitle">Share your photos with us</p>
             <div style="text-align: center; margin-top: 10px;">
-                <a class="upload-btn" href="https://photos.app.goo.gl/yourPublicAlbumShareLink" target="_blank" rel="noopener noreferrer">Upload Photos</a>
+                <input id="photoInput" type="file" accept="image/*" multiple style="margin-bottom:12px;">
+                <div style="margin-top:8px;">
+                    <button id="signInBtn" class="upload-btn" type="button">Sign in with Google</button>
+                    <button id="uploadBtn" class="upload-btn" type="button" disabled>Upload to Album</button>
+                </div>
+                <div style="margin-top:12px;">
+                    <a class="upload-btn" href="https://photos.app.goo.gl/1tNbjk8e3bim81Ay5" target="_blank" rel="noopener noreferrer">Open Album</a>
+                </div>
             </div>
         </div>
     </div>
+
+    <!-- <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script>
+        const CLIENT_ID = 'YOUR_GOOGLE_CLIENT_ID';
+        const ALBUM_ID  = 'YOUR_ALBUM_ID';
+
+        let accessToken = null;
+        let tokenClient = null;
+
+        function initAuth() {
+            tokenClient = google.accounts.oauth2.initTokenClient({
+                client_id: CLIENT_ID,
+                scope: 'https://www.googleapis.com/auth/photoslibrary.appendonly https://www.googleapis.com/auth/photoslibrary.readonly',
+                callback: (resp) => {
+                    if (resp && resp.access_token) {
+                        accessToken = resp.access_token;
+                        document.getElementById('uploadBtn').disabled = false;
+                    } else {
+                        alert('Authorization failed.');
+                    }
+                },
+            });
+        }
+
+        async function uploadBytes(file) {
+            const res = await fetch('https://photoslibrary.googleapis.com/v1/uploads', {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + accessToken,
+                    'Content-Type': 'application/octet-stream',
+                    'X-Goog-Upload-File-Name': file.name,
+                    'X-Goog-Upload-Protocol': 'raw'
+                },
+                body: await file.arrayBuffer()
+            });
+            const text = await res.text();
+            if (!res.ok) throw new Error(text || 'Upload failed');
+            return text; // uploadToken
+        }
+
+        async function batchCreate(uploadTokens) {
+            const newMediaItems = uploadTokens.map(t => ({
+                description: '',
+                simpleMediaItem: { uploadToken: t }
+            }));
+            const res = await fetch('https://photoslibrary.googleapis.com/v1/mediaItems:batchCreate', {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + accessToken,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ albumId: ALBUM_ID, newMediaItems })
+            });
+            const data = await res.json();
+            if (!res.ok) throw new Error((data && data.error && data.error.message) || 'batchCreate failed');
+            const failures = (data.newMediaItemResults || []).filter(r => r.status && r.status.code && r.status.code !== 0);
+            if (failures.length) {
+                throw new Error('Some items failed to create: ' + failures.map(f => f.status.message).join(', '));
+            }
+            return data;
+        }
+
+        window.addEventListener('load', () => {
+            initAuth();
+            const signInBtn = document.getElementById('signInBtn');
+            const uploadBtn = document.getElementById('uploadBtn');
+            const photoInput = document.getElementById('photoInput');
+
+            signInBtn.addEventListener('click', () => {
+                tokenClient.requestAccessToken({ prompt: 'consent' });
+            });
+
+            uploadBtn.addEventListener('click', async () => {
+                if (!accessToken) { alert('Please sign in first.'); return; }
+                const files = photoInput.files;
+                if (!files || files.length === 0) { alert('Please choose photo(s) to upload.'); return; }
+
+                uploadBtn.disabled = true;
+                try {
+                    const tokens = [];
+                    for (const file of files) {
+                        const t = await uploadBytes(file);
+                        tokens.push(t);
+                    }
+                    await batchCreate(tokens);
+                    alert('Upload complete!');
+                    photoInput.value = '';
+                } catch (e) {
+                    alert('Upload error: ' + (e && e.message ? e.message : e));
+                } finally {
+                    uploadBtn.disabled = false;
+                }
+            });
+        });
+    </script> -->
 </body>
 </html>
