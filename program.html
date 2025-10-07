@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home - Linh & Andrew</title>
+    <title>Program - Linh & Andrew</title>
     <link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet">
     <style>
         * {
@@ -69,20 +69,40 @@
             align-items: center;
         }
         
+        /* Paper-styled container */
         .container {
-            background: #f5e6d3;
-            padding: 40px;
+            position: relative;
+            background: #fffdf7;
+            padding: 48px 44px;
             border-radius: 3px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-            max-width: 500px;
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
+            max-width: 680px;
             width: 100%;
             border: 3px solid #fff;
             transform: rotate(-0.5deg);
+            background-image:
+                linear-gradient(rgba(0,0,0,0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,0,0,0.015) 1px, transparent 1px);
+            background-size: 100% 28px, 28px 100%;
+            background-position: 0 22px, 0 0;
+        }
+
+        /* Corner shadow to hint a page curl */
+        .container::after {
+            content: "";
+            position: absolute;
+            right: 10px;
+            bottom: 10px;
+            width: 80px;
+            height: 80px;
+            background: radial-gradient(closest-side, rgba(0,0,0,0.08), rgba(0,0,0,0) 70%);
+            transform: rotate(15deg);
+            pointer-events: none;
         }
         
         h1 {
             color: #2c2c2c;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             font-size: 28px;
             text-align: center;
             text-transform: uppercase;
@@ -92,24 +112,33 @@
         .subtitle {
             text-align: center;
             color: #4a4a4a;
-            margin-bottom: 30px;
+            margin-bottom: 28px;
             font-size: 14px;
         }
 
-        .upload-btn {
-            display: inline-block;
-            background: #2c2c2c;
-            color: #f5e6d3;
-            text-decoration: none;
-            padding: 12px 20px;
-            border: 2px solid #2c2c2c;
-            border-radius: 3px;
+        .schedule {
+            list-style: none;
+            display: grid;
+            gap: 16px;
+        }
+
+        .schedule-item {
+            display: grid;
+            grid-template-columns: 110px 1fr;
+            gap: 16px;
+            align-items: baseline;
+            padding: 12px 0;
+            border-bottom: 2px dotted rgba(44,44,44,0.25);
+        }
+
+        .time {
+            color: #2c2c2c;
+            font-weight: 700;
             letter-spacing: 1px;
             text-transform: uppercase;
-            transition: all 0.2s;
         }
-        .upload-btn:hover {
-            background: transparent;
+
+        .desc {
             color: #2c2c2c;
         }
     </style>
@@ -117,19 +146,27 @@
 <body>
     <nav class="navbar">
         <div class="nav-container">
-            <a href="index.html" class="nav-link active">Gallery</a>
+            <a href="index.html" class="nav-link">Gallery</a>
             <a href="rsvp.html" class="nav-link">RSVP</a>
-            <a href="program.html" class="nav-link">Program</a>
+            <a href="program.html" class="nav-link active">Program</a>
         </div>
     </nav>
     
     <div class="main-content">
         <div class="container">
-            <h1>Gallery</h1>
-            <p class="subtitle">Share your photos with us</p>
-            <div style="text-align: center; margin-top: 10px;">
-                <a class="upload-btn" href="https://photos.app.goo.gl/yourPublicAlbumShareLink" target="_blank" rel="noopener noreferrer">Upload Photos</a>
-            </div>
+            <h1>Program</h1>
+            <p class="subtitle">Schedule for the day</p>
+
+            <ul class="schedule">
+                <li class="schedule-item">
+                    <span class="time">2:00 PM</span>
+                    <span class="desc">Doors open and setup</span>
+                </li>
+                <li class="schedule-item">
+                    <span class="time">4:00 PM</span>
+                    <span class="desc">Wedding ceremony</span>
+                </li>
+            </ul>
         </div>
     </div>
 </body>
