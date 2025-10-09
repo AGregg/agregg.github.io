@@ -111,7 +111,8 @@
         }
         
         input[type="text"],
-        input[type="email"] {
+        input[type="email"],
+        input[type="number"] {
             width: 100%;
             padding: 12px 15px;
             border: 2px solid #2c2c2c;
@@ -123,26 +124,33 @@
         }
         
         input[type="text"]:focus,
-        input[type="email"]:focus {
+        input[type="email"]:focus,
+        input[type="number"]:focus {
             outline: none;
             border-color: #8b5a7d;
             box-shadow: 0 0 0 3px rgba(139, 90, 125, 0.1);
         }
         
-        .checkbox-group {
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .radio-option {
             display: flex;
             align-items: center;
             gap: 10px;
         }
         
-        input[type="checkbox"] {
+        input[type="radio"] {
             width: 20px;
             height: 20px;
             cursor: pointer;
             border: 2px solid #2c2c2c;
         }
         
-        .checkbox-group label {
+        .radio-option label {
             margin-bottom: 0;
             cursor: pointer;
             text-transform: none;
@@ -180,7 +188,7 @@
             color: #a83a5a;
         }
         
-        #plusOneNameField {
+        .conditional-field {
             animation: slideDown 0.3s ease-out;
         }
         
@@ -194,14 +202,29 @@
                 transform: translateY(0);
             }
         }
-    </style>
-    <script>
-        function togglePlusOneField() {
-            const checkbox = document.getElementById('plusOne');
-            const field = document.getElementById('plusOneNameField');
-            field.style.display = checkbox.checked ? 'block' : 'none';
+        
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border: 1px solid #c3e6cb;
+            border-radius: 3px;
+            margin-bottom: 20px;
+            text-align: center;
+            display: none;
         }
-    </script>
+        
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border: 1px solid #f5c6cb;
+            border-radius: 3px;
+            margin-bottom: 20px;
+            text-align: center;
+            display: none;
+        }
+    </style>
 </head>
 <body>
     <nav class="navbar">
@@ -217,19 +240,18 @@
             <h1>RSVP</h1>
             <p class="subtitle">Linh & Andrew are getting married!</p>
             
-            <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
-                <!-- Hidden field for email subject -->
-                <input type="hidden" name="_subject" value="New RSVP for Linh & Andrew's Wedding">
-                
-                <!-- Hidden field for custom message -->
-                <input type="hidden" name="message" value="Someone has RSVP'd to your wedding!">
-                
-                <!-- Auto-response configuration -->
-                <input type="hidden" name="_autoresponse" value="Thank you for your RSVP! We're so excited to celebrate with you on February 08, 2026. More details to come!">
-                
+            <div id="successMessage" class="success-message">
+                Thank you for your RSVP! We're so excited to celebrate with you on February 08, 2026. More details to come!
+            </div>
+            
+            <div id="errorMessage" class="error-message">
+                There was an error submitting your RSVP. Please try again.
+            </div>
+            
+            <form id="rsvpForm">
                 <div class="form-group">
-                    <label for="fullName">Full Name <span class="required">*</span></label>
-                    <input type="text" id="fullName" name="fullName" required>
+                    <label for="name">Full Name <span class="required">*</span></label>
+                    <input type="text" id="name" name="name" required>
                 </div>
                 
                 <div class="form-group">
@@ -238,20 +260,117 @@
                 </div>
                 
                 <div class="form-group">
-                    <div class="checkbox-group">
-                        <input type="checkbox" id="plusOne" name="plusOne" value="Yes" onchange="togglePlusOneField()">
-                        <label for="plusOne">I'll be bringing a +1</label>
+                    <label>Will you be attending? <span class="required">*</span></label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="attending_yes" name="attending" value="yes" onchange="toggleGuestFields()">
+                            <label for="attending_yes">Yes, can't wait!</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="attending_no" name="attending" value="no" onchange="toggleGuestFields()">
+                            <label for="attending_no">Sadly, I must decline</label>
+                        </div>
                     </div>
                 </div>
                 
-                <div class="form-group" id="plusOneNameField" style="display: none;">
-                    <label for="plusOneName">+1 Full Name</label>
-                    <input type="text" id="plusOneName" name="plusOneName">
+                <div class="form-group conditional-field" id="numberOfGuestsField" style="display: none;">
+                    <label for="number">Number of Guests (including yourself) <span class="required">*</span></label>
+                    <input type="number" id="number" name="number" min="1" max="10" oninput="toggleGuestNamesField()">
+                </div>
+                
+                <div class="form-group conditional-field" id="guestNamesField" style="display: none;">
+                    <label for="guests">Guest Name(s) <span class="required">*</span></label>
+                    <input type="text" id="guests" name="guests" placeholder="Enter guest names separated by commas">
                 </div>
                 
                 <button type="submit">Submit RSVP</button>
             </form>
         </div>
     </div>
+
+    <script>
+        const FORM_URL = 'https://script.google.com/macros/s/AKfycbzMqLOVHiI7XAsGM6CmsOXALiDx6pyKeA2h2KEfrwhGNHMPkbu29mOaAP3iYtIfUdEi/exec';
+        
+        function toggleGuestFields() {
+            const attendingYes = document.getElementById('attending_yes');
+            const numberOfGuestsField = document.getElementById('numberOfGuestsField');
+            const guestNamesField = document.getElementById('guestNamesField');
+            const numberInput = document.getElementById('number');
+            const guestsInput = document.getElementById('guests');
+            
+            if (attendingYes.checked) {
+                numberOfGuestsField.style.display = 'block';
+                numberOfGuestsField.classList.add('conditional-field');
+            } else {
+                numberOfGuestsField.style.display = 'none';
+                guestNamesField.style.display = 'none';
+                numberInput.value = '';
+                guestsInput.value = '';
+            }
+        }
+        
+        function toggleGuestNamesField() {
+            const numberInput = document.getElementById('number');
+            const guestNamesField = document.getElementById('guestNamesField');
+            const guestsInput = document.getElementById('guests');
+            
+            if (numberInput.value && parseInt(numberInput.value) > 1) {
+                guestNamesField.style.display = 'block';
+                guestNamesField.classList.add('conditional-field');
+            } else {
+                guestNamesField.style.display = 'none';
+                guestsInput.value = '';
+            }
+        }
+        
+        document.getElementById('rsvpForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const data = {};
+            
+            // Convert FormData to object
+            for (let [key, value] of formData.entries()) {
+                data[key] = value;
+            }
+            
+            // Set default values for conditional fields if not attending
+            if (data.attending === 'no') {
+                data.number = '0';
+                data.guests = '';
+            } else if (data.attending === 'yes' && (!data.number || data.number === '1')) {
+                data.guests = '';
+            }
+
+            console.log(data);
+            
+            try {
+                const response = await fetch(FORM_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'text/plain;charset=utf-8',
+                    },
+                    body: JSON.stringify(data),
+                });
+                
+                const result = await response.json();
+                console.log(result);
+                
+                if (result.status === "OK") {
+                    document.getElementById('successMessage').style.display = 'block';
+                    document.getElementById('errorMessage').style.display = 'none';
+                    this.reset();
+                    document.getElementById('numberOfGuestsField').style.display = 'none';
+                    document.getElementById('guestNamesField').style.display = 'none';
+                } else {
+                    throw new Error(result.message || 'Form submission failed');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('errorMessage').style.display = 'block';
+                document.getElementById('successMessage').style.display = 'none';
+            }
+        });
+    </script>
 </body>
 </html>
